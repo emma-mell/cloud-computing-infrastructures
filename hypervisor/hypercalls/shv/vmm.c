@@ -31,6 +31,13 @@ static int vmexit_handler(int exit_reason) {
   ioctl(vcpufd, KVM_GET_SREGS, &sregs);
 
   switch (exit_reason) {
+  case KVM_EXIT_IO:
+    if (vcpu_run->io.port == HC_IO_PORT) {
+      if (hypercall(&regs, guest_mem, vcpufd) == 0) {
+        return 0;
+      }
+    }
+    break;
   case KVM_EXIT_FAIL_ENTRY:
     errx(
         1, "KVM_EXIT_FAIL_ENTRY: hardware_entry_failure_reason = %#llx",

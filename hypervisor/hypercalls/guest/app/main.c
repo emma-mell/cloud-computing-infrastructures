@@ -69,7 +69,21 @@ int writeln(int fd, char *s) {
 }
 
 int main(int argc, char *argv[]) {
-  // STUDENT CODE HERE
+  if (argc < 3) {
+    return 1;
+  }
+  
+  int fd_in = open(argv[1], O_RDONLY);
+  int fd_out = open(argv[2], O_CREAT|O_WRONLY);
+
+  char msg[1024];
+  
+  read(fd_in, msg, 1024);
+
+  write(fd_out, msg, 1024);
+
+  close(fd_in);
+  close(fd_out);
 
   return 0x42;
 }
